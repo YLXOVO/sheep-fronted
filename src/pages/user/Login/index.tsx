@@ -11,6 +11,7 @@ import {
 } from '@ant-design/pro-components';
 import { Alert, message, Tabs } from 'antd';
 import React, { useState } from 'react';
+// @ts-ignore
 import {history, Link, useModel} from 'umi';
 import {MY_LOGO, YLXOVO} from "@/constants";
 import styles from './index.less';
@@ -33,6 +34,7 @@ const Login: React.FC = () => {
   const fetchUserInfo = async () => {
     const userInfo = await initialState?.fetchUserInfo?.();
     if (userInfo) {
+      // @ts-ignore
       await setInitialState((s) => ({
         ...s,
         currentUser: userInfo,
@@ -61,9 +63,9 @@ const Login: React.FC = () => {
       }
       // 如果失败去设置用户错误信息
       setUserLoginState(user);
-    } catch (error: any) {
+    } catch (error) {
       const defaultLoginFailureMessage = '登录失败，请重试！';
-      message.error(error.message??defaultLoginFailureMessage);
+      message.error(defaultLoginFailureMessage);
     }
   };
   const { status, type: loginType } = userLoginState;
@@ -103,6 +105,11 @@ const Login: React.FC = () => {
                     required: true,
                     message: '账户是必填项',
                   },
+                  {
+                    min: 4,
+                    type: 'string',
+                    message: '用户名长度不能小于4',
+                  }
                 ]}
               />
               <ProFormText.Password
@@ -115,7 +122,7 @@ const Login: React.FC = () => {
                 rules={[
                   {
                     required: true,
-                    len: 8,
+                    min: 8,
                     type: "string",
                     message: '密码不能小于8位',
                   },

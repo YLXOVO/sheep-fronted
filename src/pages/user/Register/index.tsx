@@ -89,6 +89,11 @@ const Register: React.FC = () => {
                     required: true,
                     message: '账户是必填项',
                   },
+                  {
+                    min: 4,
+                    type: 'string',
+                    message: '用户名长度不能小于4',
+                  }
                 ]}
               />
               <ProFormText.Password
@@ -101,10 +106,13 @@ const Register: React.FC = () => {
                 rules={[
                   {
                     required: true,
-                    len: 8,
-                    type: "string",
-                    message: '密码不能小于8位',
+                    message: '密码是必填项',
                   },
+                  {
+                    min: 8,
+                    type: 'string',
+                    message: '密码长度不能小于8',
+                  }
                 ]}
               />
               <ProFormText.Password

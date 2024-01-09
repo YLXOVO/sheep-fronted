@@ -23,7 +23,8 @@ export const initialStateConfig = {
 };
 
 export const request: RequestConfig = {
-   timeout: 1000000,
+  prefix:process.env.NODE_ENV=== 'production'?'http://sheep-fronted.cn':undefined,
+  timeout: 1000000,
 };
 
 
@@ -32,9 +33,9 @@ export const request: RequestConfig = {
  * */
 export async function getInitialState(): Promise<{
   settings?: Partial<LayoutSettings>;
-  currentUser?: API.CurrentUser;
+  currentUser?: API.BaseResponse<API.CurrentUser>;
   loading?: boolean;
-  fetchUserInfo?: () => Promise<API.CurrentUser | undefined>;
+  fetchUserInfo?: () => Promise<API.BaseResponse<API.CurrentUser> | undefined>;
 }> {
   const fetchUserInfo = async () => {
     //如果没有获取到当前用户的信息
@@ -56,6 +57,7 @@ export async function getInitialState(): Promise<{
     };
   }
   return {
+    // @ts-ignore
     fetchUserInfo,
     settings: defaultSettings,
   };
@@ -68,7 +70,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState}) => {
     disableContentMargin: false,
     // 用户名水印
     waterMarkProps: {
-      content: initialState?.currentUser?.username,
+      content: initialState?.currentUser?.data.username,
     },
     footerRender: () => <Footer />,
     // 跳转页面执行
